@@ -1,12 +1,18 @@
-import requests
 from datetime import datetime, timedelta
 import json
 
+import requests
+
 Proxy = "https://index.golang.org/index"
 timefmt = "%Y-%m-%dT%H:%M:%S.%fZ"
-start_stamp = datetime(2017, 1, 1)
-step = timedelta(days=7)
-end_stamp = datetime.today()
+
+
+def GetPackagesByPeriod(since: datetime, end: datetime, step: timedelta) -> set:
+    packets = set()
+    while since < end:
+        packets.update(GetPackages(since))
+        since += step
+    return packets
 
 
 def GetPackages(timestamp: datetime) -> set:
